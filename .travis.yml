@@ -50,17 +50,18 @@ before_install:
 install:
 
 before_script:
+  - mkdir build
 
 # Here supply steps such as raco make, raco test, etc.
 script:
   - raco pkg install --batch --deps search-auto charterm
-  - raco exe -o git-cdflow src/git-cdflow.rkt
-  - raco exe -o git-cdflow-parent src/git-cdflow-parent.rkt
-  - raco exe -o git-cdflow-release src/git-cdflow-release.rkt
-  - raco exe -o git-cdflow-feature src/git-cdflow-feature.rkt
-  - raco exe -o git-cdflow-issue src/git-cdflow-issue.rkt
-  - raco exe -o git-cdflow-tree src/git-cdflow-tree.rkt
-  - raco distribute git-cdflow git-cdflow git-cdflow-parent git-cdflow-release git-cdflow-feature git-cdflow-issue git-cdflow-tree
+  - raco exe -o build/git-cdflow src/git-cdflow.rkt
+  - raco exe -o build/git-cdflow-parent src/git-cdflow-parent.rkt
+  - raco exe -o build/git-cdflow-release src/git-cdflow-release.rkt
+  - raco exe -o build/git-cdflow-feature src/git-cdflow-feature.rkt
+  - raco exe -o build/git-cdflow-issue src/git-cdflow-issue.rkt
+  - raco exe -o build/git-cdflow-tree src/git-cdflow-tree.rkt
+  - raco distribute git-cdflow build/git-cdflow build/git-cdflow-parent build/git-cdflow-release build/git-cdflow-feature build/git-cdflow-issue build/git-cdflow-tree
 
 # OR: If your repo is a Racket package with an info.rkt that includes
 # some `deps`:
