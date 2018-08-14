@@ -5,6 +5,10 @@ language: c
 # that doesn't require sudo.)
 sudo: false
 
+os:
+  - linux
+  - osx
+
 env:
   global:
     # Supply a global RACKET_DIR environment variable. This is where
@@ -49,7 +53,7 @@ before_script:
 
 # Here supply steps such as raco make, raco test, etc.
 script:
-  - raco pkg install --batch charterm
+  - raco pkg install --batch --deps search-auto charterm
   - raco exe -o git-cdflow src/git-cdflow.rkt
   - raco exe -o git-cdflow-parent src/git-cdflow-parent.rkt
   - raco exe -o git-cdflow-release src/git-cdflow-release.rkt
