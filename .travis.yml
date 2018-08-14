@@ -1,39 +1,38 @@
 language: c
-
 sudo: false
-
 os:
-  - osx
-  - linux
-
+- osx
+- linux
 env:
   global:
-    - RACKET_DIR=~/racket
+  - RACKET_DIR=~/racket
   matrix:
-    - RACKET_VERSION=7.0
-
+  - RACKET_VERSION=7.0
 matrix:
   fast_finish: true
-
 before_install:
-  - git clone https://github.com/agiardina/travis-racket.git
-  - cat travis-racket/install-racket.sh | bash # pipe to bash not sh!
-  - export PATH="${RACKET_DIR}/bin:${PATH}" #install-racket.sh can't set for us
-
-install:
-
+- git clone https://github.com/agiardina/travis-racket.git
+- cat travis-racket/install-racket.sh | bash
+- export PATH="${RACKET_DIR}/bin:${PATH}"
+install: 
 before_script:
-  - mkdir build
-
-# Here supply steps such as raco make, raco test, etc.
+- mkdir build
 script:
-  - raco pkg install --batch --deps search-auto charterm
-  - raco exe -o build/git-cdflow src/git-cdflow.rkt
-  - raco exe -o build/git-cdflow-parent src/git-cdflow-parent.rkt
-  - raco exe -o build/git-cdflow-release src/git-cdflow-release.rkt
-  - raco exe -o build/git-cdflow-feature src/git-cdflow-feature.rkt
-  - raco exe -o build/git-cdflow-issue src/git-cdflow-issue.rkt
-  - raco exe -o build/git-cdflow-tree src/git-cdflow-tree.rkt
-  - raco distribute git-cdflow build/git-cdflow build/git-cdflow-parent build/git-cdflow-release build/git-cdflow-feature build/git-cdflow-issue build/git-cdflow-tree
-
-after_script:
+- raco pkg install --batch --deps search-auto charterm
+- raco exe -o build/git-cdflow src/git-cdflow.rkt
+- raco exe -o build/git-cdflow-parent src/git-cdflow-parent.rkt
+- raco exe -o build/git-cdflow-release src/git-cdflow-release.rkt
+- raco exe -o build/git-cdflow-feature src/git-cdflow-feature.rkt
+- raco exe -o build/git-cdflow-issue src/git-cdflow-issue.rkt
+- raco exe -o build/git-cdflow-tree src/git-cdflow-tree.rkt
+- raco distribute git-cdflow build/git-cdflow build/git-cdflow-parent build/git-cdflow-release
+  build/git-cdflow-feature build/git-cdflow-issue build/git-cdflow-tree
+after_script: 
+deploy:
+  provider: releases
+  api_key:
+    secure: Dsh0jYOfWTFVzlb/f8u5YcxbCv/PLNufJcGDyVW+T48AoqI2egje/Beh7EVXPH3ckzAg1ot8VRplvselWDGNI+4AqyXaiCB09kCUs54ac4JdlyznijVxjil0prHEguQAWJ9FnE5dlyb4rzTMQVJsKAXQI6UwjjZMglhsYGTyzn1E4MghUYf/3mf6uTUqZCiyKlncKLSKoKFmm6NKafg41ziRxGLh/tLOBteSrqU+8xLoZZOArwBCgOdTzisdyP0vmX8lsIifIwqN/fovh3+eDTlW5K250HDTmlAtrF+RA00EAzF36G3abSZROkOjDAs0ulhaD709LpGXpBN0m2F2baxI7PwM1t7x8O1PmhG2uBkDxxdMzYABQDwHxCxs9ToEjyoZeSzWxYT1jAgfg5TDLih/+sXmyhQtHY179SjN+sDsiDC++sa68jpnzDbiItF5bY0pQc8WuFvWDlb0LKuISgP/0S0xcpbxF1p348dpHmpfVzOKTSNsTN+CC0C8VA/v1xvUoX9b1kdU6ts818Q6cukfIrRUnj9NqwI/CCdimz5Qm7KShbsHeVLLFnk+j/ziaol+AZu8A9m5cYLl1e9YUbXw1IKJDvuMwziRhFxRnyrez3y/05vOtWJZZl66vUBd59Y+wQ7huGteeUA8qlIgew4+9Qyt+cbO46ev5dr+sEw=
+  file: git-cdflow/*
+  on:
+    repo: Etiqa/git-cdflow
+    branch: release/v0.2.0
