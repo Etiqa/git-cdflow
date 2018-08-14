@@ -31,6 +31,11 @@ script:
 - raco distribute dist/git-cdflow build/git-cdflow build/git-cdflow-parent build/git-cdflow-release
   build/git-cdflow-feature build/git-cdflow-issue build/git-cdflow-tree
 after_script: 
+before_deploy:
+  # Set up git user name and tag this commit
+  - git config --local user.name "Andrea Giardina"
+  - git config --local user.email "andrea@etiqa.it"
+  - git tag "release/v0.2.${TRAVIS_BUILD_NUMBER}-${TRAVIS_OS_NAME}"
 deploy:
   provider: releases
   api_key:
