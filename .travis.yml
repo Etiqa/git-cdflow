@@ -38,7 +38,7 @@ before_deploy:
   # Set up git user name and tag this commit
   - git config --local user.name "Andrea Giardina"
   - git config --local user.email "andrea@etiqa.it"
-  - git tag "release/v0.2.0.${TRAVIS_BUILD_NUMBER}-${TRAVIS_OS_NAME}"
+  - git tag "release/v0.2.0.${TRAVIS_BUILD_NUMBER}"
 deploy:
   provider: releases
   api_key:
