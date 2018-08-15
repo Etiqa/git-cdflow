@@ -15,10 +15,15 @@ before_install:
 - cat travis-racket/install-racket.sh | bash
 - export PATH="${RACKET_DIR}/bin:${PATH}"
 install: 
+branches:
+  only:
+  - release/*
+  - feature/*
 before_script:
 - rm -fr build
 - mkdir build
 script:
+- sed -i.bu 's/SNAPSHOT/${TRAVIS_BUILD_NUMBER}/' src/git-cdflow.rkt
 - raco pkg install --batch --deps search-auto charterm
 - raco exe -o build/git-cdflow src/git-cdflow.rkt
 - raco exe -o build/git-cdflow-parent src/git-cdflow-parent.rkt
@@ -28,7 +33,7 @@ script:
 - raco exe -o build/git-cdflow-tree src/git-cdflow-tree.rkt
 - raco distribute git-cdflow build/git-cdflow build/git-cdflow-parent build/git-cdflow-release
   build/git-cdflow-feature build/git-cdflow-issue build/git-cdflow-tree
-- tar cvzf git-cdflow.tar.gz git-cdflow 
+- tar cvzf git-cdflow-v0.2.0.${TRAVIS_BUILD_NUMBER}-${TRAVIS_OS_NAME}.tar.gz" git-cdflow 
 after_script: 
 before_deploy:
   # Set up git user name and tag this commit
