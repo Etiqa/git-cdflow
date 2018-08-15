@@ -17,8 +17,7 @@ before_install:
 install: 
 branches:
   only:
-  - release/*
-  - feature/*
+  - release/v0.2.0
 before_script:
 - rm -fr build
 - mkdir build
