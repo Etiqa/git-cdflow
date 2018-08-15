@@ -32,7 +32,7 @@ script:
 - raco exe -o build/git-cdflow-tree src/git-cdflow-tree.rkt
 - raco distribute git-cdflow build/git-cdflow build/git-cdflow-parent build/git-cdflow-release
   build/git-cdflow-feature build/git-cdflow-issue build/git-cdflow-tree
-- tar cvzf git-cdflow-v0.2.0.${TRAVIS_BUILD_NUMBER}-${TRAVIS_OS_NAME}.tar.gz" git-cdflow 
+- tar cvzf "git-cdflow-v0.2.0.${TRAVIS_BUILD_NUMBER}-${TRAVIS_OS_NAME}.tar.gz" git-cdflow 
 after_script: 
 before_deploy:
   # Set up git user name and tag this commit
