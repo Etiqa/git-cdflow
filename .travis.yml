@@ -22,7 +22,7 @@ before_script:
 - rm -fr build
 - mkdir build
 script:
-- sed -i.bu 's/SNAPSHOT/${TRAVIS_BUILD_NUMBER}/' src/git-cdflow.rkt
+- sed -i.bu "s/SNAPSHOT/${TRAVIS_BUILD_NUMBER}/" src/git-cdflow.rkt
 - raco pkg install --batch --deps search-auto charterm
 - raco exe -o build/git-cdflow src/git-cdflow.rkt
 - raco exe -o build/git-cdflow-parent src/git-cdflow-parent.rkt
