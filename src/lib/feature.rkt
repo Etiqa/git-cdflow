@@ -4,6 +4,7 @@
 
 (require "../lib/utils.rkt")
 (require "../lib/parent.rkt")
+(require "../lib/release.rkt")
 
 (provide (all-defined-out))
 
@@ -11,7 +12,6 @@
   (let ([current-branch (git-current-branch)])
     (git-branch feature-branch)
     (git-notes-add-parent current-branch feature-branch)))
-
 
 (define (feature-branch? branch)
   (regexp-match #px"^feature\\/" branch))
@@ -29,6 +29,8 @@
         [parent-branch  (get-parent)])
     (cond
       [(git-local-branch-exists parent-branch) (git-merge-from-to current-branch parent-branch)]
+      [(release-branch? parent-branch) (git-checkout-remote-branch-to parent-branch parent-branch)
+                                       (git-merge current-branch)]
       [else (try-close-in-remote-branch parent-branch)])))
 
 (define (get-feature-branch feature-name)
