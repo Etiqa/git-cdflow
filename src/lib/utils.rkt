@@ -228,7 +228,7 @@
   (sh (format "git branch -d ~a" branch)))
 
 (define (git-delete-remote-branch branch)
-  (sh (format "git push :~a" branch)))
+  (sh (format "git push origin --delete ~a" branch)))
 
 (define (open-browser-page url)
   (sh (string-append "open " url)))
