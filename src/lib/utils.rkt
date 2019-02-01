@@ -56,8 +56,8 @@
           (printf "    \033[90m~a\033[0m\n" item)))
         items)))
 
-(define (clear-terminal-screen) 
-  (with-charterm 
+(define (clear-terminal-screen)
+  (with-charterm
     (unless (equal? (charterm-protocol (current-charterm)) 'ascii)
       (charterm-clear-screen))))
 
@@ -188,8 +188,8 @@
   (non-empty-string? (sh->string (format "git branch -l --list \"~a\"" branch-name))))
 
 (define (git-remote-commits repo-path)
-  (map (lambda (lst) (list (string-replace (caddr lst) "refs/remotes/origin/" "") (car lst))) 
-    (map (lambda (line) (string-split line #px"[\\s]+")) 
+  (map (lambda (lst) (list (string-replace (caddr lst) "refs/remotes/origin/" "") (car lst)))
+    (map (lambda (line) (string-split line #px"[\\s]+"))
       (sh->list (format "git --git-dir=~a/.git for-each-ref refs/remotes/origin/" repo-path)))))
 
 (define (git-remote-branch-contains-commit? repo-path branch commit)
@@ -226,6 +226,9 @@
 
 (define (git-delete-branch branch)
   (sh (format "git branch -d ~a" branch)))
+
+(define (git-delete-remote-branch branch)
+  (sh (format "git push :~a" branch)))
 
 (define (open-browser-page url)
   (sh (string-append "open " url)))

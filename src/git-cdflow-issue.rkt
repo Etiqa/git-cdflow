@@ -26,7 +26,7 @@ usage: git cdflow issue start
 
        finish   Switch to parent branch and merge there the current branch.
                 The parent branch is the branch that generated the current one
-                or the one that has been set with `git cdflow parent set` 
+                or the one that has been set with `git cdflow parent set`
                 command.
 
                 Put the issue in the 'resolved' status.

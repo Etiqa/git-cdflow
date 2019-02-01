@@ -14,7 +14,7 @@
 (define help #<<MESSAGE
 
 usage: git cdflow feature start <feature-name>
-       git cdflow feature finish
+       git cdflow feature [-d, --delete-local] finish
        git cdflow feature checkout <feature-name>
        git cdflow feature public
        git cdflow feature private
@@ -27,26 +27,30 @@ usage: git cdflow feature start <feature-name>
 
        finish   Switch to parent branch and merge there the current branch.
                 The parent branch is the branch that generated the current one
-                or the one that has been set with `git cdflow parent set` 
+                or the one that has been set with `git cdflow parent set`
                 command.
 
                 Example usage:
                 git cdflow feature finish
 
-       checkout Checking out a branch updates the files in the working 
+       checkout Checking out a branch updates the files in the working
                 directory.
                 In case on origin there are both a private feature branch and a
                 public one a menu will ask to the user to select the right one.
 
-       public   Push the current branch on origin: 
+       public   Push the current branch on origin:
                 origin/feature/<feature-name>
 
        private  Push the current branch on origin but on private path:
                 origin/private/feature/<feature-name>
-
+OPTIONS
+        -d, --delete-local
+            After merging the feature with its parent, delete the local feature branch
 
 MESSAGE
 )
+
+(define delete-local? (make-parameter #f))
 
 (define (start feature-name)
   (cond
@@ -79,12 +83,15 @@ MESSAGE
       [(not (equal? files-to-commit '())) (display-err "There are files to commit. Aborted!\n") ]
       [(not parent) (display-err "No parent has been set, please see `git cdflow parent help`\n") ]
       [(not (regexp-match #px"^feature\\/" current-branch)) (display-err "Please move in a feature branch\n")]
-      [else (close-feature-branch)])))
+      [else (close-feature-branch)
+            (when (delete-local?) (git-delete-branch (get-feature-branch current-branch)))])))
 
 (define (main)
   (let-values (
     [(action feature-name)
       (command-line
+       #:once-each
+       [("-d" "--delete-local") "Delete the local feature branch" (delete-local? #t)]
         #:args (action [feature-name #f])
         (values action feature-name))])
 
@@ -97,6 +104,6 @@ MESSAGE
       [(equal? action "finish") (finish)]
       [else (display help)])))
 
-;(current-directory "/Users/agiardina/dev/test-repo2")
+;; (current-directory "/Users/rserra/dev/etiqa-website")
 
 (void (main))
