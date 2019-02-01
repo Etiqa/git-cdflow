@@ -71,6 +71,7 @@ MESSAGE
             (show-release-from-menu (release-branches)))]))
 
 (define (show-releases)
+  (git-fetch)
   (display (sh->string sh-release-list)))
 
 (define (sort-by-depth file-list)
